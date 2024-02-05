@@ -1,0 +1,1 @@
+This data has been supplied by the Apache SpamAssassin dataset (https://spamassassin.apache.org).

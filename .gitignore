@@ -24,3 +24,8 @@ xpam-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+spam/
+spam_2/
+easy_*/
+hard_*/
