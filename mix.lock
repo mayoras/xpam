@@ -1,3 +1,6 @@
 %{
+  "elixir_make": {:hex, :elixir_make, "0.7.8", "505026f266552ee5aabca0b9f9c229cbb496c689537c9f922f3eb5431157efc7", [:mix], [{:castore, "~> 0.1 or ~> 1.0", [hex: :castore, repo: "hexpm", optional: true]}, {:certifi, "~> 2.0", [hex: :certifi, repo: "hexpm", optional: true]}], "hexpm", "7a71945b913d37ea89b06966e1342c85cfe549b15e6d6d081e8081c493062c07"},
+  "fast_html": {:hex, :fast_html, "2.3.0", "08c1d8ead840dd3060ba02c761bed9f37f456a1ddfe30bcdcfee8f651cec06a6", [:make, :mix], [{:elixir_make, "~> 0.4", [hex: :elixir_make, repo: "hexpm", optional: false]}, {:nimble_pool, "~> 0.2.0", [hex: :nimble_pool, repo: "hexpm", optional: false]}], "hexpm", "f18e3c7668f82d3ae0b15f48d48feeb257e28aa5ab1b0dbf781c7312e5da029d"},
   "floki": {:hex, :floki, "0.35.3", "0c8c6234aa71cb2b069cf801e8f8f30f8d096eb452c3dae2ccc409510ec32720", [:mix], [], "hexpm", "6d9f07f3fc76599f3b66c39f4a81ac62c8f4d9631140268db92aacad5d0e56d4"},
+  "nimble_pool": {:hex, :nimble_pool, "0.2.6", "91f2f4c357da4c4a0a548286c84a3a28004f68f05609b4534526871a22053cde", [:mix], [], "hexpm", "1c715055095d3f2705c4e236c18b618420a35490da94149ff8b580a2144f653f"},
 }

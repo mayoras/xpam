@@ -22,7 +22,8 @@ defmodule Xpam.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:floki, "~> 0.35.0"}
+      {:floki, "~> 0.35.0"},
+      {:fast_html, "~> 2.0"}
     ]
   end
 end
