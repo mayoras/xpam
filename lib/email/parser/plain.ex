@@ -12,8 +12,7 @@ defmodule Email.Parser.Plain do
     Reader.bof(dev)
 
     with {:ok, _first} <- Parser.skip_until(dev, @plain_begin, [:match_whole]),
-         {:ok, lines} <- Parser.read_until(dev, @plain_end),
-         text <- Enum.join(lines, "\n") do
+         {:ok, text} when is_binary(text) <- Parser.read_until(dev, @plain_end) do
       {:ok, text}
     else
       error -> error

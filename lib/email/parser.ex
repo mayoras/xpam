@@ -30,11 +30,17 @@ defmodule Email.Parser do
   end
 
   @doc """
-  Reads from IO device until `stopper` is present. Returns all lines read including the `stopper` line.
+  Reads from IO device until `stopper` is present. Returns all lines read including the `stopper` line. Returns full binary in case of EOF stopper.
   """
-  @spec read_until(Email.Reader.device(), String.t(), list(atom())) ::
-          {:ok, list(String.t())}
-  def read_until(dev, stopper, lines \\ []) do
+  @spec read_until(Email.Reader.device(), String.t() | :eof, list(atom())) ::
+          {:ok, list(String.t())} | {:ok, binary()}
+  def read_until(dev, stopper, lines \\ [])
+
+  def read_until(dev, :eof, _lines) do
+    IO.read(dev, :eof)
+  end
+
+  def read_until(dev, stopper, lines) when is_binary(stopper) do
     line = IO.read(dev, :line)
 
     cond do
