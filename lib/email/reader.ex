@@ -3,8 +3,10 @@ defmodule Email.Reader do
   Module to make EXTRACT operations (**E**TL) over Email raw content.
   """
 
+  require Logger
   alias Email.Headers.Collector
   alias Email.Headers.Header
+  alias Email.Parser
 
   @typedoc "An I/O device. Could be a process (pid) or an OS file descriptor."
   @type device :: pid() | {:file_descriptor, atom(), any()}
@@ -39,6 +41,40 @@ defmodule Email.Reader do
   defdelegate close_file(dev), to: File, as: :close
 
   ### READING OPS ###
+  @doc """
+  Seek file descriptor to beginning of file.
+  """
+  @spec bof(device()) :: {:error, atom()} | {:ok, integer()}
+  def bof(dev), do: :file.position(dev, {:bof, 0})
+
+  @spec extract(device()) :: nil
+  def extract(dev) do
+    # extract content-type header
+    with %Header{key: _key, value: value} <- Collector.get(dev, @content_type_header),
+         # determine email content type
+         c_type when not is_nil(c_type) <- parse_type(value) do
+      # do content extraction depending on content type
+      try do
+        do_extract(dev, c_type)
+      catch
+        val ->
+          Logger.error("Error on extract/1: #{val}")
+          raise val
+      end
+    else
+      error -> error
+    end
+
+    # return content (lazy?)
+  end
+
+  defp do_extract(dev, :html), do: Parser.Html.parse(dev)
+  defp do_extract(dev, :plain), do: Parser.Plain.parse(dev)
+
+  defp do_extract(_dev, :multipart) do
+    throw("Extraction of multipart document not implemented.")
+  end
+
   defp parse_type(plain) do
     plain =
       plain
@@ -50,29 +86,5 @@ defmodule Email.Reader do
       nil -> {:error, :invalid_content_type}
       t -> t
     end
-  end
-
-  @spec extract(device()) :: nil
-  def extract(dev) do
-    # extract content-type header
-    with %Header{key: _key, value: value} <- Collector.get(dev, @content_type_header),
-         # determine email content type
-         c_type when not is_nil(c_type) <- parse_type(value) do
-      # do content extraction depending on content type
-      do_extract(dev, c_type)
-    else
-      error -> error
-    end
-
-    # return content (lazy?)
-  end
-
-  defp do_extract(dev, :html) do
-  end
-
-  defp do_extract(dev, :plain) do
-  end
-
-  defp do_extract(dev, :multipart) do
   end
 end
