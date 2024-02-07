@@ -1,9 +1,9 @@
-defmodule Xpam.Email.Headers.Collector do
+defmodule Email.Headers.Collector do
   use Agent
 
   require Logger
 
-  alias Xpam.Email.Headers.Header
+  alias Email.Headers.Header
 
   @delim ":"
 
