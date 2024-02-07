@@ -8,7 +8,7 @@ defmodule Xpam.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      {Xpam.Email.Headers.Collector, opts: []}
+      {Email.Headers.Collector, opts: []}
     ]
 
     opts = [strategy: :one_for_one, name: Xpam.Supervisor]

@@ -4,6 +4,7 @@ defmodule Email.Headers.Collector do
   require Logger
 
   alias Email.Headers.Header
+  alias Email.Reader
 
   @delim ":"
 
@@ -37,7 +38,7 @@ defmodule Email.Headers.Collector do
 
   def seek(dev, header) when not is_nil(dev) and not is_nil(header) do
     # repos the file descriptor to the beginning of file
-    {:ok, _} = bof(dev)
+    {:ok, _} = Reader.bof(dev)
 
     # start seeking
     do_seek(dev, header)
@@ -86,6 +87,4 @@ defmodule Email.Headers.Collector do
         end
     end
   end
-
-  defp bof(dev), do: :file.position(dev, {:bof, 0})
 end
