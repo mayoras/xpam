@@ -4,11 +4,17 @@ defmodule Xpam.Email.Reader do
   """
 
   alias Xpam.Email.Headers.Collector
+  alias Xpam.Email.Headers.Header
 
   @typedoc "An I/O device. Could be a process (pid) or an OS file descriptor."
   @type device :: pid() | {:file_descriptor, atom(), any()}
 
-  @valid_content_types [:html, :plain, :multipart]
+  @content_type_header "content-type"
+  @content_type_pattern %{
+    "text/html" => :html,
+    "text/plain" => :plain,
+    "multipart/mixed" => :multipart
+  }
 
   ### OPENING/CLOSING ###
   @doc """
@@ -33,21 +39,40 @@ defmodule Xpam.Email.Reader do
   defdelegate close_file(dev), to: File, as: :close
 
   ### READING OPS ###
+  defp parse_type(plain) do
+    plain =
+      plain
+      |> String.split(";")
+      |> List.first()
+      |> String.trim()
+
+    case Map.get(@content_type_pattern, plain, nil) do
+      nil -> {:error, :invalid_content_type}
+      t -> t
+    end
+  end
+
   @spec extract(device()) :: nil
   def extract(dev) do
-    # extract headers
-
-    # determine the content type of email
-
-    # do content extraction depending on content type
+    # extract content-type header
+    with %Header{key: _key, value: value} <- Collector.get(dev, @content_type_header),
+         # determine email content type
+         c_type when not is_nil(c_type) <- parse_type(value) do
+      # do content extraction depending on content type
+      do_extract(dev, c_type)
+    else
+      error -> error
+    end
 
     # return content (lazy?)
   end
 
-  defp headers(dev) do
+  defp do_extract(dev, :html) do
   end
 
-  # get email content type
-  defp content_type(headers) do
+  defp do_extract(dev, :plain) do
+  end
+
+  defp do_extract(dev, :multipart) do
   end
 end

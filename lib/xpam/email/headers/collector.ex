@@ -71,7 +71,10 @@ defmodule Xpam.Email.Headers.Collector do
           # update state
           Agent.update(__MODULE__, fn state ->
             Map.update(state, :header, nil, fn _ ->
-              struct(Header, key: key |> String.trim(" "), value: value |> String.trim(" "))
+              struct(Header,
+                key: key |> String.trim(" ") |> String.downcase(),
+                value: value |> String.trim(" ")
+              )
             end)
           end)
 
