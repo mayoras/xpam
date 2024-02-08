@@ -6,6 +6,8 @@ defmodule Email.Headers.Collector do
   alias Email.Headers.Header
   alias Email.Reader
 
+  @type t :: %Header{}
+
   @delim ":"
 
   defp state, do: Agent.get(__MODULE__, & &1)
@@ -18,11 +20,15 @@ defmodule Email.Headers.Collector do
   end
 
   ### API ###
+  @spec get(Reader.device(), String.t() | nil) :: t() | :ok | {:error, atom()}
   def get(dev, header \\ nil) do
     if is_nil(header) do
       # if not header specified, return the current state
       state()
     else
+      # normalize header
+      header = header |> Header.normalize()
+
       # get the current state
       curr_head = state()
 
@@ -36,7 +42,7 @@ defmodule Email.Headers.Collector do
     end
   end
 
-  def seek(dev, header) when not is_nil(dev) and not is_nil(header) do
+  defp seek(dev, header) when not is_nil(dev) and not is_nil(header) do
     # repos the file descriptor to the beginning of file
     {:ok, _} = Reader.bof(dev)
 
@@ -44,7 +50,7 @@ defmodule Email.Headers.Collector do
     do_seek(dev, header)
   end
 
-  def seek(nil, _header), do: Logger.error("Device is nil, cannot read file.")
+  defp seek(nil, _header), do: Logger.error("Device is nil, cannot read file.")
 
   defp do_seek(dev, target) when not is_nil(target) do
     # read line
@@ -63,24 +69,22 @@ defmodule Email.Headers.Collector do
 
       line when is_binary(line) ->
         reg = String.split(line, @delim)
-        key = List.first(reg)
+        key = List.first(reg) |> Header.normalize()
 
         if length(reg) == 2 and key == target do
           # found header!
           value = List.last(reg)
 
           # update state
-          Agent.update(__MODULE__, fn state ->
-            Map.update(state, :header, nil, fn _ ->
-              struct(Header,
-                key: key |> String.trim(" ") |> String.downcase(),
-                value: value |> String.trim(" ")
-              )
-            end)
+          Agent.update(__MODULE__, fn _state ->
+            struct(Header,
+              key: key,
+              value: value |> String.trim(" ")
+            )
           end)
 
           # return state
-          get(key)
+          get(dev, target)
         else
           # it isn't? keep seeking
           do_seek(dev, target)
