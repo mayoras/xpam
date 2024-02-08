@@ -47,7 +47,7 @@ defmodule Xpam.Email.Reader do
   @spec bof(device()) :: {:error, atom()} | {:ok, integer()}
   def bof(dev), do: :file.position(dev, {:bof, 0})
 
-  @spec extract(device()) :: nil
+  @spec extract(device()) :: {:ok, String.t()} | {:error, any()}
   def extract(dev) do
     # extract content-type header
     with %Header{key: _key, value: value} <- Collector.get(dev, @content_type_header),
@@ -55,7 +55,7 @@ defmodule Xpam.Email.Reader do
          c_type when not is_nil(c_type) <- parse_type(value) do
       try do
         # do content extraction depending on content type
-        parse(dev, c_type)
+        {:ok, parse(dev, c_type)}
       catch
         val ->
           Logger.error("Error on extract/1: #{val}")
