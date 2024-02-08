@@ -106,7 +106,12 @@ defmodule XpamTest.Email.Headers.CollectorTest do
       assert header == Collector.get(dev, nil)
     end
 
-    #   test "should return key-value pair on multiple delimiters", ctx do
-    #   end
+    test "should return key-value pair on multiple delimiters", %{device: dev} do
+      multi_delim = "Date"
+
+      assert %Header{key: key, value: val} = Collector.get(dev, multi_delim)
+      assert key == String.downcase(multi_delim)
+      assert is_binary(val)
+    end
   end
 end

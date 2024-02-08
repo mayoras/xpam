@@ -68,7 +68,7 @@ defmodule Email.Headers.Collector do
         {:error, reason}
 
       line when is_binary(line) ->
-        reg = String.split(line, @delim)
+        reg = String.split(line, @delim, parts: 2)
         key = List.first(reg) |> Header.normalize()
 
         if length(reg) == 2 and key == target do
