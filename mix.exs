@@ -23,7 +23,8 @@ defmodule Xpam.MixProject do
   defp deps do
     [
       {:floki, "~> 0.35.0"},
-      {:fast_html, "~> 2.0"}
+      {:fast_html, "~> 2.0"},
+      {:explorer, "~> 0.8.0"}
     ]
   end
 end

@@ -53,8 +53,8 @@ defmodule Email.Reader do
     with %Header{key: _key, value: value} <- Collector.get(dev, @content_type_header),
          # determine email content type
          c_type when not is_nil(c_type) <- parse_type(value) do
-      # do content extraction depending on content type
       try do
+        # do content extraction depending on content type
         parse(dev, c_type)
       catch
         val ->
@@ -64,14 +64,13 @@ defmodule Email.Reader do
     else
       error -> error
     end
-
-    # return content (lazy?)
   end
 
   defp parse(dev, :html), do: Parser.Html.parse(dev)
   defp parse(dev, :plain), do: Parser.Plain.parse(dev)
 
   defp parse(_dev, :multipart) do
+    # TODO: implement parser for multipart content-type
     throw("Extraction of multipart document not implemented.")
   end
 
