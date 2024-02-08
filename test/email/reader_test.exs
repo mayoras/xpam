@@ -1,7 +1,7 @@
 defmodule XpamTest.Email.ReaderTest do
   use ExUnit.Case, async: true
 
-  import Xpam.Email.Reader
+  import Email.Reader
 
   describe "open_file/1" do
     setup do
