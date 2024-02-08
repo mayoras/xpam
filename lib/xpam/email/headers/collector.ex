@@ -1,10 +1,10 @@
-defmodule Email.Headers.Collector do
+defmodule Xpam.Email.Headers.Collector do
   use Agent
 
   require Logger
 
-  alias Email.Headers.Header
-  alias Email.Reader
+  alias Xpam.Email.Headers.Header
+  alias Xpam.Email.Reader
 
   @type t :: %Header{}
 

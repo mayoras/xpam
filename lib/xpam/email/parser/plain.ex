@@ -1,12 +1,12 @@
-defmodule Email.Parser.Plain do
-  @behaviour Email.Parser
+defmodule Xpam.Email.Parser.Plain do
+  @behaviour Xpam.Email.Parser
 
-  alias Email.{Reader, Parser}
+  alias Xpam.Email.{Reader, Parser}
 
   @plain_begin "\n"
   @plain_end :eof
 
-  @impl Email.Parser
+  @impl Xpam.Email.Parser
   def parse(dev) do
     # seek beginning of file
     Reader.bof(dev)

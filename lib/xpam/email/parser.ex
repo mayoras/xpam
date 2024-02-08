@@ -1,13 +1,13 @@
-defmodule Email.Parser do
+defmodule Xpam.Email.Parser do
   @doc """
   Parses a string with format.
   """
-  @callback parse(Email.Reader.device()) :: {:ok, term()} | {:error, atom()}
+  @callback parse(Xpam.Email.Reader.device()) :: {:ok, term()} | {:error, atom()}
 
   @doc """
   Skips content from IO device until a `stopper` presents and returns the stopper.
   """
-  @spec skip_until(Email.Reader.device(), String.t()) :: {:ok, String.t()} | {:error, atom()}
+  @spec skip_until(Xpam.Email.Reader.device(), String.t()) :: {:ok, String.t()} | {:error, atom()}
   def skip_until(dev, stopper, opts \\ []) do
     line = IO.read(dev, :line)
 
@@ -32,7 +32,7 @@ defmodule Email.Parser do
   @doc """
   Reads from IO device until `stopper` is present. Returns all lines read including the `stopper` line. Returns full binary in case of EOF stopper.
   """
-  @spec read_until(Email.Reader.device(), String.t() | :eof, list(atom())) ::
+  @spec read_until(Xpam.Email.Reader.device(), String.t() | :eof, list(atom())) ::
           {:ok, list(String.t())} | {:ok, binary()}
   def read_until(dev, stopper, lines \\ [])
 

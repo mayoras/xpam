@@ -1,8 +1,8 @@
 defmodule XpamTest.Email.Headers.CollectorTest do
   use ExUnit.Case
 
-  alias Email.Headers.Collector
-  alias Email.Headers.Header
+  alias Xpam.Email.Headers.Collector
+  alias Xpam.Email.Headers.Header
 
   @moduletag capture_log: true
 

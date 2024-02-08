@@ -1,12 +1,12 @@
-defmodule Email.Reader do
+defmodule Xpam.Email.Reader do
   @moduledoc """
   Module to make EXTRACT operations (**E**TL) over Email raw content.
   """
 
   require Logger
-  alias Email.Headers.Collector
-  alias Email.Headers.Header
-  alias Email.Parser
+  alias Xpam.Email.Headers.Collector
+  alias Xpam.Email.Headers.Header
+  alias Xpam.Email.Parser
 
   @typedoc "An I/O device. Could be a process (pid) or an OS file descriptor."
   @type device :: pid() | {:file_descriptor, atom(), any()}

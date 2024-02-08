@@ -1,12 +1,12 @@
-defmodule Email.Parser.Html do
-  @behaviour Email.Parser
+defmodule Xpam.Email.Parser.Html do
+  @behaviour Xpam.Email.Parser
 
-  alias Email.{Reader, Parser}
+  alias Xpam.Email.{Reader, Parser}
 
   @html_begin "<html>"
   @html_end "</html>"
 
-  @impl Email.Parser
+  @impl Xpam.Email.Parser
   def parse(dev) do
     # seek beginning of file
     Reader.bof(dev)
