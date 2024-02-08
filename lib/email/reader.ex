@@ -55,7 +55,7 @@ defmodule Email.Reader do
          c_type when not is_nil(c_type) <- parse_type(value) do
       # do content extraction depending on content type
       try do
-        do_extract(dev, c_type)
+        parse(dev, c_type)
       catch
         val ->
           Logger.error("Error on extract/1: #{val}")
@@ -68,10 +68,10 @@ defmodule Email.Reader do
     # return content (lazy?)
   end
 
-  defp do_extract(dev, :html), do: Parser.Html.parse(dev)
-  defp do_extract(dev, :plain), do: Parser.Plain.parse(dev)
+  defp parse(dev, :html), do: Parser.Html.parse(dev)
+  defp parse(dev, :plain), do: Parser.Plain.parse(dev)
 
-  defp do_extract(_dev, :multipart) do
+  defp parse(_dev, :multipart) do
     throw("Extraction of multipart document not implemented.")
   end
 
