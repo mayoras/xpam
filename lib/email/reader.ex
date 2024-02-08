@@ -80,7 +80,7 @@ defmodule Email.Reader do
       plain
       |> String.split(";")
       |> List.first()
-      |> String.trim()
+      |> String.trim(" ")
 
     case Map.get(@content_type_pattern, plain, nil) do
       nil -> {:error, :invalid_content_type}
