@@ -1,4 +1,10 @@
 defmodule Xpam.Email.Headers.Collector do
+  @moduledoc """
+  Scan and extract key-value pairs from headers in email content.
+  """
+
+  # TODO: discard the Agent approach and just define a module that we can
+  # call dynamically using Tasks.
   use Agent
 
   require Logger
